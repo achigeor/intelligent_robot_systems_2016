@@ -77,7 +77,7 @@ class RobotController:
         # if distance is between 7 and 10m go with max speed
         # frontal radar rays are in the middle of scan matrix
         linear = np.clip(np.min(scan[(len(scan) / 2 - 23):(len(scan) / 2 + 23)]), a_min=0, a_max=7) / 7
-        if linear < 0.5:  # Decrease this value to delay change, here is 0.5 meaning that if an obstacle is closer than
+        if linear < 0.6:  # Decrease this value to delay change, here is 0.5 meaning that if an obstacle is closer than
             # 3.5m, you need to turn
             if max(scan[0:(len(scan) / 2 - 23)]) < max(scan[(len(scan) / 2 + 23):len(scan)]):
                 angular = 1
@@ -117,6 +117,7 @@ class RobotController:
             ############################### NOTE QUESTION ############################
             # You must combine the two sets of speeds. You can use motor schema,
             # subsumption of whatever suits your better.
+
 
             ##########################################################################
         else:
