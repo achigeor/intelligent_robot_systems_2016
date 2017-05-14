@@ -279,6 +279,29 @@ class Navigation:
             st_x = self.subtargets[self.next_subtarget][0]
             st_y = self.subtargets[self.next_subtarget][1]
 
-        ######################### NOTE: QUESTION  ##############################
+            # Find the distance between the robot and the next subtarget
+            dist = math.hypot(rx - st_x, ry - st_y)
+
+            # phi is the angle between the robot and the next subtarget
+            # we calculate that angle using atan2, which returns the angle
+            # between a point [x,y] and the x'x axis, with origin on 0,0
+            # So, we move the origin to the robots position by subtracting
+            # its coordinates from a given point
+            phi = math.atan2(st_y - ry, st_x - rx)
+
+            if 3.14 >= (phi - theta) > 0.1 and phi > theta:  # if phi is bigger than theta and their difference is
+                # lower than pi (they are anti-parallel), turn left
+                linear = 0
+                angular = 1
+            elif 3.14 >= (theta - phi) > 0.1 and phi < theta:  # if phi is smaller than theta and their difference is
+                # lower than pi (they are anti-parallel), turn right
+                linear = 0
+                angular = -1
+            else:  # otherwise, move ahead
+                linear = (np.clip(dist, a_min=1, a_max=5)) / 5  # start slowing down if you are getting closer to
+                # target (distance smaller than 10cm)
+                angular = 0
+
+        ######################### NOTE: QUESTION  #############-#################
 
         return [linear, angular]
