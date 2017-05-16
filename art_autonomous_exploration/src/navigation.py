@@ -91,21 +91,37 @@ class Navigation:
             self.robot_perception.origin['y'] / self.robot_perception.resolution
         ]
 
-        # Find the distance between the robot pose and the next subtarget
-        dist = math.hypot(
-            rx - self.subtargets[self.next_subtarget][0],
-            ry - self.subtargets[self.next_subtarget][1])
+        # # Find the distance between the robot pose and the next subtarget
+        # dist = math.hypot(
+        #     rx - self.subtargets[self.next_subtarget][0],
+        #     ry - self.subtargets[self.next_subtarget][1])
 
         ######################### NOTE: QUESTION  ##############################
         # What if a later subtarget or the end has been reached before the 
         # next subtarget? Alter the code accordingly.
         # Check if distance is less than 7 px (14 cm)
-        if dist < 5:
-            self.next_subtarget += 1
-            self.counter_to_next_sub = self.count_limit
-            # Check if the final subtarget has been approached
-            if self.next_subtarget == len(self.subtargets):
-                self.target_exists = False
+        # if dist < 5:
+        #     self.next_subtarget += 1
+        #     self.counter_to_next_sub = self.count_limit
+        #     # Check if the final subtarget has been approached
+        #     if self.next_subtarget == len(self.subtargets):
+        #         self.target_exists = False
+
+        # find the distance between robot and ALL subtargets
+        dists = (math.hypot(
+                rx - self.subtargets[subtarget][0],
+                ry - self.subtargets[subtarget][1]) for subtarget, _ in enumerate(self.subtargets))
+
+        # check the distance of each subtarget from the robot
+        # go towards the nearest and change index of next_subtarget
+        # accordingly
+        for idx, dist in enumerate(dists):
+            if dist < 5:
+                self.next_subtarget = idx + 1
+                self.counter_to_next_sub = self.count_limit
+                # Check if the final subtarget has been approached
+                if self.next_subtarget == len(self.subtargets):
+                    self.target_exists = False
         ########################################################################
 
         # Publish the current target
@@ -288,19 +304,42 @@ class Navigation:
             # So, we move the origin to the robots position by subtracting
             # its coordinates from a given point
             phi = math.atan2(st_y - ry, st_x - rx)
+            #
+            # if 3.2 >= (phi - theta) >= 0.1 and phi > theta:  # if phi is bigger than theta and their difference is
+            #     # lower than pi (they are anti-parallel), turn left
+            #     linear = 0
+            #     angular = 1
+            # elif 3.2 >= (theta - phi) >= 0.1 and phi < theta:  # if phi is smaller than theta and their difference is
+            #     # lower than pi (they are anti-parallel), turn right
+            #     linear = 0
+            #     angular = -1
+            # else:  # otherwise, move ahead
+            #     linear = (np.clip(dist, a_min=1, a_max=5)) / 5  # start slowing down if you are getting closer to
+            #     # target (distance smaller than 10cm)
+            #     angular = 0
+            #
 
-            if 3.14 >= (phi - theta) > 0.1 and phi > theta:  # if phi is bigger than theta and their difference is
+            if phi > theta + 0.1:  # if phi is bigger than theta and their difference is
                 # lower than pi (they are anti-parallel), turn left
-                linear = 0
-                angular = 1
-            elif 3.14 >= (theta - phi) > 0.1 and phi < theta:  # if phi is smaller than theta and their difference is
+                if 3.2 >= (phi - theta) >= 0.1:
+                    linear = 0
+                    angular = 1
+                else:
+                    linear = 0
+                    angular = -1
+            elif phi + 0.1 < theta:  # if phi is smaller than theta and their difference is
                 # lower than pi (they are anti-parallel), turn right
-                linear = 0
-                angular = -1
+                if  3.2 >= (theta - phi) >= 0.1:
+                    linear = 0
+                    angular = -1
+                else:
+                    linear = 0
+                    angular = 1
             else:  # otherwise, move ahead
                 linear = (np.clip(dist, a_min=1, a_max=5)) / 5  # start slowing down if you are getting closer to
                 # target (distance smaller than 10cm)
                 angular = 0
+
 
         ######################### NOTE: QUESTION  #############-#################
 

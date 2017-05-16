@@ -79,11 +79,13 @@ class RobotController:
         linear = np.clip(np.min(scan[(len(scan) / 2 - 23):(len(scan) / 2 + 23)]), a_min=0, a_max=7) / 7
         if linear < 0.6:  # Decrease this value to delay change, here is 0.5 meaning that if an obstacle is closer than
             # 3.5m, you need to turn
-            if max(scan[0:(len(scan) / 2 - 23)]) < max(scan[(len(scan) / 2 + 23):len(scan)]):
-                angular = 1
-            else:
-                angular = -1
+            # if min(scan[0:(len(scan) / 2 - 23)]) < min(scan[(len(scan) / 2 + 23):len(scan)]): # test with min
+            #     angular = 1
+            # else:
+            #     angular = -1
+            angular = 1
         ##########################################################################
+
         return [linear, angular]
 
     # Combines the speeds into one output using a motor schema approach
@@ -112,12 +114,17 @@ class RobotController:
         self.linear_velocity = 0
         self.angular_velocity = 0
 
-        if self.move_with_target == True:
+        if self.move_with_target:
             [l_goal, a_goal] = self.navigation.velocitiesToNextSubtarget()
             ############################### NOTE QUESTION ############################
             # You must combine the two sets of speeds. You can use motor schema,
             # subsumption of whatever suits your better.
-
+            if l_laser<0.1: # kati den tou aresei kai pigenei opou nanai kapoies fores
+                self.linear_velocity = 0.3*l_laser
+                self.angular_velocity = 0.3 * a_laser
+            else:
+                self.linear_velocity = 0.3*l_goal
+                self.angular_velocity = 0.3*a_goal
 
             ##########################################################################
         else:
