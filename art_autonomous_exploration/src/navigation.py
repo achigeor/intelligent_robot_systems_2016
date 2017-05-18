@@ -194,6 +194,7 @@ class Navigation:
         force_random = False
         while len(self.path) == 0:
             start = time.time()
+            print(self.robot_perception.resolution)
             target = self.target_selection.selectTarget(
                 local_ogm,
                 local_coverage,
