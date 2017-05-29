@@ -1,3 +1,6 @@
+This fork contains my solutions for the Intelligent Robot Systems project.
+Below is the original README, with additions to things I've changed and pointers to the code I implemented.
+
 ##Intelligent Robot Systems 2016-2017
 
 This code was created in order to allow experimentation towards developing specific modules of an autonomous simulated vehicle that performs full exploration **and coverage** of an unknown a priori environment. Next, you can find instructions on how to setup the code in your PC / laptop, the description of the code, as well as the description challenges.
@@ -14,25 +17,26 @@ At the end you must submit a **compressed file containing this folder** with you
 
 Challenge 1 [*2 pts*]: **Laser-based obstacle avoidance**
 
-You must fill the part of the code that calculates linear and rotational velocities using the LIDAR values. The objective is for the robot to wander, but not collide to obstacles. Please add the code [here](https://github.com/achigeor/intelligent_robot_systems_2016/blob/master/art_autonomous_exploration/src/speeds_assignment.py#L73) and [here](https://github.com/etsardou/intelligent_robot_systems_2016/blob/master/art_autonomous_exploration/src/speeds_assignment.py#L131).
+You must fill the part of the code that calculates linear and rotational velocities using the LIDAR values. The objective is for the robot to wander, but not collide to obstacles. 
+I added code [here](https://github.com/achigeor/intelligent_robot_systems_2016/blob/master/art_autonomous_exploration/src/speeds_assignment.py#L73) and [here](https://github.com/etsardou/intelligent_robot_systems_2016/blob/master/art_autonomous_exploration/src/speeds_assignment.py#L131).
 
 Notes: The robot **must** have a maximum absolute linear speed of **0.3 m/s** and maximum absolute rotational speed **0.3 rad/sec**. 
 
-In order to check this functionality turn [this](https://github.com/etsardou/intelligent_robot_systems_2016/blob/master/art_autonomous_exploration/config/autonomous_expl.yaml#L9) to ```False```.
+In order to check this functionality turn [this](https://github.com/achigeor/intelligent_robot_systems_2016/blob/master/art_autonomous_exploration/config/autonomous_expl.yaml#L9) to ```False```.
 
 ---
 
 Challenge 2 [*1 pt*]: **Path visualization**
 
-This task is about making the path visible to the RViz tool. Please add the code [here](https://github.com/achigeor/intelligent_robot_systems_2016/blob/master/art_autonomous_exploration/src/navigation.py#252). The ```self.robot_perception.resolution``` and ```self.robot_perception.origin``` parameters may be useful, thus you must understand how the robot perception module works / stores the data.
+This task is about making the path visible to the RViz tool. I added the code [here](https://github.com/achigeor/intelligent_robot_systems_2016/blob/master/art_autonomous_exploration/src/navigation.py#252). The ```self.robot_perception.resolution``` and ```self.robot_perception.origin``` parameters may be useful, thus you must understand how the robot perception module works / stores the data.
 
-In order to test it, the exploration mode must be enabled, thus turn [this](https://github.com/etsardou/intelligent_robot_systems_2016/blob/master/art_autonomous_exploration/config/autonomous_expl.yaml#L9) to ```True```. This value will be kept ```True``` for all the remaining tasks.
+In order to test it, the exploration mode must be enabled, thus turn [this](https://github.com/achigeor/intelligent_robot_systems_2016/blob/master/art_autonomous_exploration/config/autonomous_expl.yaml#L9) to ```True```. This value will be kept ```True``` for all the remaining tasks.
 
 ---
 
 Challenge 3 [*2 pts*]: **Path following**
 
-This task is about producing the correct velocities for the robot to follow the produced path. Please add the code [here](https://github.com/achigeor/intelligent_robot_systems_2016/blob/master/art_autonomous_exploration/src/navigation.py#L290). The known parameters are the global robot pose acquired from the SLAM algorithm and the next subtarget.
+This task is about producing the correct velocities for the robot to follow the produced path.I addedthe code [here](https://github.com/achigeor/intelligent_robot_systems_2016/blob/master/art_autonomous_exploration/src/navigation.py#L290). The known parameters are the global robot pose acquired from the SLAM algorithm and the next subtarget.
 
 Again, the robot **must** have a maximum absolute linear speed of **0.3 m/s** and maximum absolute rotational speed **0.3 rad/sec**.
 
@@ -40,7 +44,7 @@ Again, the robot **must** have a maximum absolute linear speed of **0.3 m/s** an
 
 Challenge 4 [*1 pt*]: **Path following & obstacle avoidance**
 
-This task is about combining the path following and obstacle avoidance velocities using a strategy like motor schema, subsumption or a hubrid one. Please fill the code [here](https://github.com/achigeor/intelligent_robot_systems_2016/blob/master/art_autonomous_exploration/src/speeds_assignment.py#L119).
+This task is about combining the path following and obstacle avoidance velocities using a strategy like motor schema, subsumption or a hubrid one.I filled the code [here](https://github.com/achigeor/intelligent_robot_systems_2016/blob/master/art_autonomous_exploration/src/speeds_assignment.py#L119) using subsumption.
 
 Again, the robot **must** have a maximum absolute linear speed of **0.3 m/s** and maximum absolute rotational speed **0.3 rad/sec**.
 
@@ -48,7 +52,7 @@ Again, the robot **must** have a maximum absolute linear speed of **0.3 m/s** an
 
 Challenge 5 [*1 pts*]: **Smarter subgoal checking**
 
-This task is about making the subgoal checking routine smarter. Right now it checks if the next subtarget has been approached. But what if the robot reaches the end or a later subgoal without visiting the next? Please fill your code [here](https://github.com/achigeor/intelligent_robot_systems_2016/blob/master/art_autonomous_exploration/src/navigation.py#L99).
+This task is about making the subgoal checking routine smarter. Right now it checks if the next subtarget has been approached. But what if the robot reaches the end or a later subgoal without visiting the next? I filled code [here](https://github.com/achigeor/intelligent_robot_systems_2016/blob/master/art_autonomous_exploration/src/navigation.py#L99).
 
 ---
 
@@ -60,7 +64,7 @@ It is not necessary to use all of them. If you don't, remember to **erase them**
 
 Also there is a possibility of the path planning to fail for specific targets that are close to obstacles or that they exist in a "strange" topology. In that case, you must write code to deal with these cases (e.g. select a more naive target selection method). Bear in mind that the robot should **always have a target to reach** in order for the exploration and full coverage to end!.
 
-Please alter [this](https://github.com/achigeor/intelligent_robot_systems_2016/blob/master/art_autonomous_exploration/src/target_selection.py#L120) code.
+I implemented the CNT method [this](https://github.com/achigeor/intelligent_robot_systems_2016/blob/master/art_autonomous_exploration/src/target_selection.py#L120) code.
 Must Select [this]
 (https://github.com/achigeor/intelligent_robot_systems_2016/blob/master/art_autonomous_exploration/config/autonomous_expl.yaml#L3)
 
@@ -69,6 +73,8 @@ Must Select [this]
 ---
 
 Extra Challenge 1 [*3 pts*]: **Path optimization / alteration**
+
+**DIDN'T IMPLEMENT IT**
 
 The path planning module produces length optimal paths using an A* algorithm, along with a uniform PRM graph. This doesn't mean that the length optimal paths will result in less coverage / exploration time.
 
