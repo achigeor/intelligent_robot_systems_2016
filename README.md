@@ -1,7 +1,9 @@
 This fork contains my solutions for the Intelligent Robot Systems project.
 Below is the original README, with additions to things I've changed and pointers to the code I implemented.
 
-##Intelligent Robot Systems 2016-2017
+---
+
+**Intelligent Robot Systems 2016-2017**
 
 This code was created in order to allow experimentation towards developing specific modules of an autonomous simulated vehicle that performs full exploration **and coverage** of an unknown a priori environment. Next, you can find instructions on how to setup the code in your PC / laptop, the description of the code, as well as the description challenges.
 
