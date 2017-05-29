@@ -37,7 +37,6 @@ class TargetSelection:
                      resolution, force_random=False):
 
         target = [-1, -1]
-        print resolution
 
         ######################### NOTE: QUESTION  ##############################
         # Implement a smart way to select the next target. You have the 
@@ -87,13 +86,16 @@ class TargetSelection:
         )
 
         # Random point
-        # if self.method == 'random' or force_random == True:
-        #     target = self.selectRandomTarget(ogm, coverage, brush, ogm_limits)
-        #
-        # if self.method == 'distance':
-        #     target = self.selectNearestTopologyNode(robot_pose, resolution, nodes)
-        target = self.selectNearestTopologyNode(robot_pose=robot_pose, resolution=resolution, nodes=nodes, ogm=ogm,
-                                                coverage=coverage, brushogm=brush)
+        if self.method == 'random' or force_random == True:
+            target = self.selectRandomTarget(ogm, coverage, brush, ogm_limits)
+
+        # CTN
+        if self.method == 'CTN':
+            target = self.selectNearestTopologyNode(robot_pose=robot_pose, resolution=resolution, nodes=nodes)
+            if target is None:
+                target = self.selectRandomTarget(ogm, coverage, brush, ogm_limits)
+        # target = self.selectNearestTopologyNode(robot_pose=robot_pose, resolution=resolution, nodes=nodes, ogm=ogm,
+        #                                         coverage=coverage, brushogm=brush)
         ########################################################################
 
         return target
@@ -115,7 +117,7 @@ class TargetSelection:
         return next_target
 
     # way too slow, maybe i didn't quite understood weigthed path find?
-    def selectNearestTopologyNode(self, robot_pose, resolution, nodes, ogm, coverage, brushogm):
+    def selectNearestTopologyNode(self, robot_pose, resolution, nodes):
         # The next target in pixels
         tinit = time.time()
         next_target = [0, 0]
@@ -131,41 +133,32 @@ class TargetSelection:
                 g_robot_pose,
                 node,
                 resolution)  # can I use that?
-            if len(self.path)==0:
+            if len(self.path) == 0:
                 break
             x_n, y_n = node[0], node[1]
             exp = ((x_n - x_g) ** 2 + (y_n - y_g) ** 2) / (2 * (sigma ** 2))
             scale_factor = 1 / (1 - math.exp(-exp) + 0.01)
 
-            # dist = np.asarray(self.path).transpose()  # dist is [[x1 x2 x3..],[y1 y2 y3 ..]]
-            dist = zip(*self.path)  # dist is [[x1 x2 x3..],[y1 y2 y3 ..]] #transpose
+            coords = zip(*self.path)  # dist is [[x1 x2 x3..],[y1 y2 y3 ..]] #transpose
 
-            shift = np.empty_like(dist)
-            shift[0] = dist[0][-1:] + dist[0][:-1] #(xpi+1)
-            shift[1] = dist[1][-1:] + dist[1][:-1] #(ypi+1)
+            coord_shift = np.empty_like(coords)
+            coord_shift[0] = coords[0][-1:] + coords[0][:-1]  # (xpi+1)
+            coord_shift[1] = coords[1][-1:] + coords[1][:-1]  # (ypi+1)
 
-            dist = np.asarray(dist)
-            shift = np.asarray(shift)
-            dist = [(a - b)**2 for a, b in zip(dist[:, 1:], shift[:, 1:])]  # (xpi - xpi+1)^2 , (ypi-ypi+1)^2
-            dist = sum(np.sqrt(dist[0]+dist[1]))
+            coords = np.asarray(coords)
 
-            # w = len(self.path) * (1 / scale_factor)  # na ginei swsta to W giati to len path exei ta stoixeia oxi tis apostaseis
-            w = dist * (1 / scale_factor)  # na ginei swsta to W giati to len path exei ta stoixeia oxi tis apostaseis
-            print (self.path)
+            dist = [(a - b) ** 2 for a, b in zip(coords[:, 1:], coord_shift[:, 1:])]  # (xpi - xpi+1)^2 , (ypi-ypi+1)^2
+            dist = sum(np.sqrt(dist[0] + dist[1]))
+
+            w = dist * (1 / scale_factor)
             if w < w_dist and len(self.path) != 0:
                 if self.prev_target == node:
                     break
                 w_dist = w
-                # if ogm[x_n][y_n] < 50 and coverage[x_n][y_n] < 50 and \
-                #                 brushogm[x_n][y_n] > 5:
-                #     print "mpika"
-                print len(self.path)
-
                 next_target = node
 
-        self.prev_target = next_target
+        self.prev_target = next_target  # dont select the same target it we failed already
 
         Print.art_print("Select nearest node target time: " + str(time.time() - tinit),
                         Print.ORANGE)
-        print next_target
         return next_target

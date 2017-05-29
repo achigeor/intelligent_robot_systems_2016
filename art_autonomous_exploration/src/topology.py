@@ -21,14 +21,26 @@ class Topology:
   def skeletonizationCffi(self, ogm, origin, resolution, ogml):
     width = ogm.shape[0]
     height = ogm.shape[1]
-
+    # import time
     local = numpy.zeros(ogm.shape)
 
-    for i in range(0, width):
-      for j in range(0, height):
-        if ogm[i][j] < 49:
-          local[i][j] = 1
-    
+    # 10x faster
+    local[numpy.where(ogm<49)] = 1
+
+    # local2 = numpy.zeros(ogm.shape)
+    # start = time.time()
+    # for i in range(0, width):
+    #   for j in range(0, height):
+    #     if ogm[i][j] < 49:
+    #       local[i][j] = 1
+    # end = time.time()
+    # print ("loop took:", end-start)
+    # start = time.time()
+    # local[numpy.where(ogm<49)] = 1
+    # end = time.time()
+    # print ("numpy took:", end-start)
+
+
     skeleton = Cffi.thinning(local, ogml)
     skeleton = Cffi.prune(skeleton, ogml, 10)
   
@@ -37,6 +49,8 @@ class Topology:
       for j in range(0, height):
         if skeleton[i][j] == 1:
           viz.append([i * resolution + origin['x'],j * resolution + origin['y']])
+
+
 
     RvizHandler.printMarker(\
             viz,\
@@ -61,10 +75,12 @@ class Topology:
     local = numpy.zeros(ogm.shape)
     useful_local = numpy.zeros(useful_ogm.shape)
 
-    for i in range(0, useful_width):
-      for j in range(0, useful_height):
-        if useful_ogm[i][j] < 49:
-          useful_local[i][j] = 1
+    # for i in range(0, useful_width):
+    #   for j in range(0, useful_height):
+    #     if useful_ogm[i][j] < 49:
+    #       useful_local[i][j] = 1
+
+    useful_local[numpy.where(useful_ogm<49)] = 1 #todo allagi
       
     skeleton = skeletonize(useful_local)
     skeleton = self.pruning(skeleton, 10)

@@ -109,8 +109,8 @@ class Navigation:
 
         # find the distance between robot and ALL subtargets
         dists = (math.hypot(
-                rx - self.subtargets[subtarget][0],
-                ry - self.subtargets[subtarget][1]) for subtarget, _ in enumerate(self.subtargets))
+            rx - self.subtargets[subtarget][0],
+            ry - self.subtargets[subtarget][1]) for subtarget, _ in enumerate(self.subtargets))
 
         # check the distance of each subtarget from the robot
         # go towards the nearest and change index of next_subtarget
@@ -213,6 +213,7 @@ class Navigation:
                 Print.art_print("Path planning failed. Fallback to random target selection", Print.RED)
                 force_random = True
 
+
         # Reverse the path to start from the robot
         self.path = self.path[::-1]
 
@@ -231,6 +232,7 @@ class Navigation:
         # optimal in length but 1) not smooth and 2) length optimality
         # may not be desired for coverage-based exploration
         ########################################################################
+
 
         self.counter_to_next_sub = self.count_limit
 
@@ -297,7 +299,7 @@ class Navigation:
             st_y = self.subtargets[self.next_subtarget][1]
 
             # Find the distance between the robot and the next subtarget
-            dist = math.hypot(rx - st_x, ry - st_y)
+            # dist = math.hypot(rx - st_x, ry - st_y)
 
             # phi is the angle between the robot and the next subtarget
             # we calculate that angle using atan2, which returns the angle
@@ -305,42 +307,18 @@ class Navigation:
             # So, we move the origin to the robots position by subtracting
             # its coordinates from a given point
             phi = math.atan2(st_y - ry, st_x - rx)
-            #
-            # if 3.2 >= (phi - theta) >= 0.1 and phi > theta:  # if phi is bigger than theta and their difference is
-            #     # lower than pi (they are anti-parallel), turn left
-            #     linear = 0
-            #     angular = 1
-            # elif 3.2 >= (theta - phi) >= 0.1 and phi < theta:  # if phi is smaller than theta and their difference is
-            #     # lower than pi (they are anti-parallel), turn right
-            #     linear = 0
-            #     angular = -1
-            # else:  # otherwise, move ahead
-            #     linear = (np.clip(dist, a_min=1, a_max=5)) / 5  # start slowing down if you are getting closer to
-            #     # target (distance smaller than 10cm)
-            #     angular = 0
-            #
 
-            if phi > theta + 0.1:  # if phi is bigger than theta and their difference is
+            if 3.2 >= (phi - theta) >= 0.1 and phi > theta:  # if phi is bigger than theta and their difference is
                 # lower than pi (they are anti-parallel), turn left
-                if 3.2 >= (phi - theta) >= 0.1:
-                    linear = 0
-                    angular = 1
-                else:
-                    linear = 0
-                    angular = -1
-            elif phi + 0.1 < theta:  # if phi is smaller than theta and their difference is
+                linear = 0
+                angular = 1
+            elif 3.2 >= (theta - phi) >= 0.1 and phi < theta:  # if phi is smaller than theta and their difference is
                 # lower than pi (they are anti-parallel), turn right
-                if  3.2 >= (theta - phi) >= 0.1:
-                    linear = 0
-                    angular = -1
-                else:
-                    linear = 0
-                    angular = 1
+                linear = 0
+                angular = -1
             else:  # otherwise, move ahead
-                linear = (np.clip(dist, a_min=1, a_max=5)) / 5  # start slowing down if you are getting closer to
-                # target (distance smaller than 10cm)
+                linear = 1
                 angular = 0
-
 
         ######################### NOTE: QUESTION  #############-#################
 

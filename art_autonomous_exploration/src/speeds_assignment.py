@@ -1,5 +1,5 @@
 #!/usr/bin/env python
-
+# from __future__ import division
 from __future__ import print_function
 import rospy
 import math
@@ -79,14 +79,14 @@ class RobotController:
         linear = np.clip(np.min(scan[(len(scan) / 2 - 23):(len(scan) / 2 + 23)]), a_min=0, a_max=7) / 7
         if linear < 0.6:  # Decrease this value to delay change, here is 0.5 meaning that if an obstacle is closer than
             # 3.5m, you need to turn
-            # if min(scan[0:(len(scan) / 2 - 23)]) < min(scan[(len(scan) / 2 + 23):len(scan)]): # test with min
-            #     angular = 1
-            # else:
-            #     angular = -1
-            angular = 1
+            # whether to turn left or right depending on lidar values
+            if min(scan[0:(len(scan) / 2 - 23)]) < min(scan[(len(scan) / 2 + 23):len(scan)]):
+                angular = 1
+            else:
+                angular = -1
         ##########################################################################
-
         return [linear, angular]
+
 
     # Combines the speeds into one output using a motor schema approach
     def produceSpeeds(self):
@@ -131,9 +131,9 @@ class RobotController:
             ############################### NOTE QUESTION ############################
             # Implement obstacle avoidance here using the laser speeds.
             # Hint: Subtract them from something constant
-            self.linear_velocity = 0.3 * l_laser
-            print(self.linear_velocity)
-            self.angular_velocity = 0.3 * a_laser
+
+            self.linear_velocity = 0.3*l_laser
+            self.angular_velocity = 0.3*a_laser
             ##########################################################################
 
     # Assistive functions
