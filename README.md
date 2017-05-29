@@ -30,7 +30,7 @@ In order to check this functionality turn [this](https://github.com/achigeor/int
 
 Challenge 2 [*1 pt*]: **Path visualization**
 
-This task is about making the path visible to the RViz tool. I added the code [here](https://github.com/achigeor/intelligent_robot_systems_2016/blob/master/art_autonomous_exploration/src/navigation.py#252). The ```self.robot_perception.resolution``` and ```self.robot_perception.origin``` parameters may be useful, thus you must understand how the robot perception module works / stores the data.
+This task is about making the path visible to the RViz tool. I added the code [here](https://github.com/achigeor/intelligent_robot_systems_2016/blob/master/art_autonomous_exploration/src/navigation.py#L252). The ```self.robot_perception.resolution``` and ```self.robot_perception.origin``` parameters may be useful, thus you must understand how the robot perception module works / stores the data.
 
 In order to test it, the exploration mode must be enabled, thus turn [this](https://github.com/achigeor/intelligent_robot_systems_2016/blob/master/art_autonomous_exploration/config/autonomous_expl.yaml#L9) to ```True```. This value will be kept ```True``` for all the remaining tasks.
 
@@ -66,9 +66,8 @@ It is not necessary to use all of them. If you don't, remember to **erase them**
 
 Also there is a possibility of the path planning to fail for specific targets that are close to obstacles or that they exist in a "strange" topology. In that case, you must write code to deal with these cases (e.g. select a more naive target selection method). Bear in mind that the robot should **always have a target to reach** in order for the exploration and full coverage to end!.
 
-I implemented the CNT method [this](https://github.com/achigeor/intelligent_robot_systems_2016/blob/master/art_autonomous_exploration/src/target_selection.py#L120) code.
-Must Select [this]
-(https://github.com/achigeor/intelligent_robot_systems_2016/blob/master/art_autonomous_exploration/config/autonomous_expl.yaml#L3)
+I implemented the CNT method [here](https://github.com/achigeor/intelligent_robot_systems_2016/blob/master/art_autonomous_exploration/src/target_selection.py#L120).
+Must Select [this](https://github.com/achigeor/intelligent_robot_systems_2016/blob/master/art_autonomous_exploration/config/autonomous_expl.yaml#L3).
 
 ---
 
@@ -88,10 +87,8 @@ Extra Challenge 2 [*3 pts*]: **Algorithmic optimization**
 
 You will notice that a serious amount of time is being spent in calculations concerning the target selection. Feel free to alter whatever code you want in order to optimize it! Optimizations already exist using the Cffi library, where C code is being executed within Python. You can follow this approach or improve Python code.
 
-Some imporovements [here]
-(https://github.com/achigeor/intelligent_robot_systems_2016/blob/master/art_autonomous_exploration/src/topology.py#L28)
-and [here]
-(https://github.com/achigeor/intelligent_robot_systems_2016/blob/master/art_autonomous_exploration/src/topology.py#L83)
+Some imporovements [here](https://github.com/achigeor/intelligent_robot_systems_2016/blob/master/art_autonomous_exploration/src/topology.py#L28),
+and [here](https://github.com/achigeor/intelligent_robot_systems_2016/blob/master/art_autonomous_exploration/src/topology.py#L83)
 
 ---
 
