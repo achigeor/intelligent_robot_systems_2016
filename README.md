@@ -14,7 +14,7 @@ At the end you must submit a **compressed file containing this folder** with you
 
 Challenge 1 [*2 pts*]: **Laser-based obstacle avoidance**
 
-You must fill the part of the code that calculates linear and rotational velocities using the LIDAR values. The objective is for the robot to wander, but not collide to obstacles. Please add the code [here](https://github.com/etsardou/intelligent_robot_systems_2016/blob/master/art_autonomous_exploration/src/speeds_assignment.py#L75) and [here](https://github.com/etsardou/intelligent_robot_systems_2016/blob/master/art_autonomous_exploration/src/speeds_assignment.py#L117).
+You must fill the part of the code that calculates linear and rotational velocities using the LIDAR values. The objective is for the robot to wander, but not collide to obstacles. Please add the code [here](https://github.com/achigeor/intelligent_robot_systems_2016/blob/master/art_autonomous_exploration/src/speeds_assignment.py#L73) and [here](https://github.com/etsardou/intelligent_robot_systems_2016/blob/master/art_autonomous_exploration/src/speeds_assignment.py#L131).
 
 Notes: The robot **must** have a maximum absolute linear speed of **0.3 m/s** and maximum absolute rotational speed **0.3 rad/sec**. 
 
@@ -24,7 +24,7 @@ In order to check this functionality turn [this](https://github.com/etsardou/int
 
 Challenge 2 [*1 pt*]: **Path visualization**
 
-This task is about making the path visible to the RViz tool. Please add the code [here](https://github.com/etsardou/intelligent_robot_systems_2016/blob/master/art_autonomous_exploration/src/navigation.py#L233). The ```self.robot_perception.resolution``` and ```self.robot_perception.origin``` parameters may be useful, thus you must understand how the robot perception module works / stores the data.
+This task is about making the path visible to the RViz tool. Please add the code [here](https://github.com/achigeor/intelligent_robot_systems_2016/blob/master/art_autonomous_exploration/src/navigation.py#252). The ```self.robot_perception.resolution``` and ```self.robot_perception.origin``` parameters may be useful, thus you must understand how the robot perception module works / stores the data.
 
 In order to test it, the exploration mode must be enabled, thus turn [this](https://github.com/etsardou/intelligent_robot_systems_2016/blob/master/art_autonomous_exploration/config/autonomous_expl.yaml#L9) to ```True```. This value will be kept ```True``` for all the remaining tasks.
 
@@ -32,7 +32,7 @@ In order to test it, the exploration mode must be enabled, thus turn [this](http
 
 Challenge 3 [*2 pts*]: **Path following**
 
-This task is about producing the correct velocities for the robot to follow the produced path. Please add the code [here](https://github.com/etsardou/intelligent_robot_systems_2016/blob/master/art_autonomous_exploration/src/navigation.py#L282). The known parameters are the global robot pose acquired from the SLAM algorithm and the next subtarget.
+This task is about producing the correct velocities for the robot to follow the produced path. Please add the code [here](https://github.com/achigeor/intelligent_robot_systems_2016/blob/master/art_autonomous_exploration/src/navigation.py#L290). The known parameters are the global robot pose acquired from the SLAM algorithm and the next subtarget.
 
 Again, the robot **must** have a maximum absolute linear speed of **0.3 m/s** and maximum absolute rotational speed **0.3 rad/sec**.
 
@@ -40,7 +40,7 @@ Again, the robot **must** have a maximum absolute linear speed of **0.3 m/s** an
 
 Challenge 4 [*1 pt*]: **Path following & obstacle avoidance**
 
-This task is about combining the path following and obstacle avoidance velocities using a strategy like motor schema, subsumption or a hubrid one. Please fill the code [here](https://github.com/etsardou/intelligent_robot_systems_2016/blob/master/art_autonomous_exploration/src/speeds_assignment.py#L111).
+This task is about combining the path following and obstacle avoidance velocities using a strategy like motor schema, subsumption or a hubrid one. Please fill the code [here](https://github.com/achigeor/intelligent_robot_systems_2016/blob/master/art_autonomous_exploration/src/speeds_assignment.py#L119).
 
 Again, the robot **must** have a maximum absolute linear speed of **0.3 m/s** and maximum absolute rotational speed **0.3 rad/sec**.
 
@@ -48,7 +48,7 @@ Again, the robot **must** have a maximum absolute linear speed of **0.3 m/s** an
 
 Challenge 5 [*1 pts*]: **Smarter subgoal checking**
 
-This task is about making the subgoal checking routine smarter. Right now it checks if the next subtarget has been approached. But what if the robot reaches the end or a later subgoal without visiting the next? Please fill your code [here](https://github.com/etsardou/intelligent_robot_systems_2016/blob/master/art_autonomous_exploration/src/navigation.py#L102).
+This task is about making the subgoal checking routine smarter. Right now it checks if the next subtarget has been approached. But what if the robot reaches the end or a later subgoal without visiting the next? Please fill your code [here](https://github.com/achigeor/intelligent_robot_systems_2016/blob/master/art_autonomous_exploration/src/navigation.py#L99).
 
 ---
 
@@ -60,7 +60,9 @@ It is not necessary to use all of them. If you don't, remember to **erase them**
 
 Also there is a possibility of the path planning to fail for specific targets that are close to obstacles or that they exist in a "strange" topology. In that case, you must write code to deal with these cases (e.g. select a more naive target selection method). Bear in mind that the robot should **always have a target to reach** in order for the exploration and full coverage to end!.
 
-Please alter [this](https://github.com/etsardou/intelligent_robot_systems_2016/blob/master/art_autonomous_exploration/src/target_selection.py#L39) code.
+Please alter [this](https://github.com/achigeor/intelligent_robot_systems_2016/blob/master/art_autonomous_exploration/src/target_selection.py#L120) code.
+Must Select [this]
+(https://github.com/achigeor/intelligent_robot_systems_2016/blob/master/art_autonomous_exploration/config/autonomous_expl.yaml#L3)
 
 ---
 
@@ -77,6 +79,11 @@ Investigate ways to alter the path, aiming at increasing the coverage rate, inse
 Extra Challenge 2 [*3 pts*]: **Algorithmic optimization**
 
 You will notice that a serious amount of time is being spent in calculations concerning the target selection. Feel free to alter whatever code you want in order to optimize it! Optimizations already exist using the Cffi library, where C code is being executed within Python. You can follow this approach or improve Python code.
+
+Some imporovements [here]
+(https://github.com/achigeor/intelligent_robot_systems_2016/blob/master/art_autonomous_exploration/src/topology.py#L28)
+and [here]
+(https://github.com/achigeor/intelligent_robot_systems_2016/blob/master/art_autonomous_exploration/src/topology.py#L83)
 
 ---
 
